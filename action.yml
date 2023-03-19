@@ -1,0 +1,10 @@
+name: "Send Github secrets to SSM"
+description: "Github Action to write Github Secrets into AWS SSM"
+author: "Kasper Pihl"
+branding:
+  icon: "settings"
+  color: "yellow"
+inputs:
+runs:
+  using: "node18"
+  main: "index.js"

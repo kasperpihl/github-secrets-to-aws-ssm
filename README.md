@@ -9,8 +9,8 @@ jobs:
   github_secrets_job:
     runs-on: ubuntu-latest
     steps:
-      - name: Create .env file
-        uses: kasperpihl/github-secrets-to-aws-ssm@v1
+      - name: Make AWS Secrets
+        uses: kasperpihl/github-secrets-to-aws-ssm@main
         with:
           TEST_API_KEY: ${{ secrets.TEST_API_KEY }}
           ANOTHER_KEY: ${{ secrets.ANOTHER_KEY }}

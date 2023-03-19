@@ -4,7 +4,6 @@ author: "Kasper Pihl"
 branding:
   icon: "settings"
   color: "yellow"
-inputs:
 runs:
-  using: "node18"
+  using: "node16"
   main: "index.js"

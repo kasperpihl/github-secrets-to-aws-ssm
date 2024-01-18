@@ -35,12 +35,14 @@ try {
 
   // Save all variable
   variables.forEach(([key, value]) => {
-    console.log(`Saving variable ${key}`);
-    execSync(
-      `aws ssm put-parameter --name "${key}" --value "${value}" --type "SecureString" --overwrite`
-    );
-    // Remove this path from remainingPaths
-    remainingPaths = remainingPaths.filter((path) => path != key);
+    if (value) {
+      console.log(`Saving variable ${key}`);
+      execSync(
+        `aws ssm put-parameter --name "${key}" --value "${value}" --type "SecureString" --overwrite`
+      );
+      // Remove this path from remainingPaths
+      remainingPaths = remainingPaths.filter((path) => path != key);
+    }
   });
 
   // If any paths are left, delete them all

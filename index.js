@@ -5,13 +5,13 @@ const { join } = require("node:path");
 
 // All github actions input is prefixed with INPUT_
 const inputPrefix = "INPUT_";
-const _PREFIX = (process.env._PREFIX || "appsecrets").replace(/^\/+/, "");
+const PREFIX = (process.env.INPUT_PREFIX || "appsecrets").replace(/^\/+/, "");
 
 try {
   const resFile = join(__dirname, "existing.json");
   // Get all existing parameters under prefix into a json file
   execSync(
-    `aws ssm get-parameters-by-path --path /${_PREFIX} --recursive > ${resFile}`
+    `aws ssm get-parameters-by-path --path /${PREFIX} --recursive > ${resFile}`
   );
 
   // Load them into memory as "path[]", to determine if anyone should be deleted
@@ -25,8 +25,8 @@ try {
   // Turn SOME_SECRET into /{prefix}/SOME_SECRET
   const variables = Object.keys(process.env)
     .map(function (key) {
-      if (key.startsWith(inputPrefix) && key !== "_PREFIX") {
-        const id = `/${_PREFIX}/${key.substring(inputPrefix.length)}`;
+      if (key.startsWith(inputPrefix) && key !== "INPUT_PREFIX") {
+        const id = `/${PREFIX}/${key.substring(inputPrefix.length)}`;
         const value = process.env[key];
         return [id, value];
       }

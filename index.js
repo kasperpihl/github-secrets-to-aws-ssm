@@ -46,11 +46,19 @@ try {
     }
   });
 
-  // If any paths are left, delete them all
+  // If any paths are left, delete them all (in batches of 10, AWS limit)
   if (remainingPaths.length) {
-    const varsToDelete = remainingPaths.map((path) => `"${path}"`).join(" ");
-    console.log(`Deleting variables ${varsToDelete}`);
-    execSync(`aws ssm delete-parameters --names ${varsToDelete}`);
+    const batchSize = 10;
+    for (let i = 0; i < remainingPaths.length; i += batchSize) {
+      const batch = remainingPaths.slice(i, i + batchSize);
+      const varsToDelete = batch.map((path) => `"${path}"`).join(" ");
+      console.log(
+        `Deleting variables batch ${
+          Math.floor(i / batchSize) + 1
+        }: ${varsToDelete}`
+      );
+      execSync(`aws ssm delete-parameters --names ${varsToDelete}`);
+    }
   }
 } catch (error) {
   core.setFailed(error.message);
